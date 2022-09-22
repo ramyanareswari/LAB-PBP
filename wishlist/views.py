@@ -1,20 +1,27 @@
+import datetime
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from wishlist.models import BarangWishlist
 
+
+
 # Sebuah fungsi yang menerima parameter request dan mengembalikan render(request, "wishlist.html")
+@login_required(login_url='/wishlist/login/')
 def show_wishlist(request):
     data_barang_wishlist = BarangWishlist.objects.all()
-    # name_header = Name.objects.all()
     
     context = {
         'list_barang': data_barang_wishlist,
-        'nama':  'Ramya Nareswari'
+        'nama':  'Ramya Nareswari',
+        'last_login': request.COOKIES['last_login'],
     }
 
     return render(request, "wishlist.html", context)
@@ -39,7 +46,9 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('wishlist:show_wishlist')
+            response = HttpResponseRedirect(reverse("wishlist:show_wishlist"))
+            response.set_cookie('last_login', str(datetime.datetime.now()))
+            return response
         else:
             messages.info(request, 'Username atau Password salah!')
     context = {}
@@ -47,7 +56,9 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    return redirect('wishlist:login')
+    response = HttpResponseRedirect(reverse('wishlist:login'))
+    response.delete_cookie('last_login')
+    return response
 
 def show_xml(request):
     data = BarangWishlist.objects.all()
