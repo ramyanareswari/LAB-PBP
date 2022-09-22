@@ -1,5 +1,8 @@
 from django.core import serializers
 from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 from django.shortcuts import render
 from wishlist.models import BarangWishlist
 
@@ -14,6 +17,19 @@ def show_wishlist(request):
     }
 
     return render(request, "wishlist.html", context)
+
+def register(request):
+    form = UserCreationForm()
+
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Akun telah berhasil dibuat!')
+            return redirect('wishlist:login')
+    
+    context = {'form':form}
+    return render(request, 'register.html', context)
 
 def show_xml(request):
     data = BarangWishlist.objects.all()
