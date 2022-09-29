@@ -2,30 +2,38 @@
 {% load static %}
 
 {% block meta %}
-    <title>Mya|Wishlist</title>
+    <title>Mya | Wishlist</title>
 {% endblock meta %}
 
 {% block content %}
 
     {% include 'header.html' %}
 
-    <h5>Nama: </h5>
-    <p>{{nama}}</p>
+    <section class="landing">
+        <div class="container-fluid">
+            <div class="title">
+                <h1 class="text-center">Selamat Datang di</h1>
+                <h1 class="text-center">Wishlist Mya</h1>
+            </div>
+        </div>
+    </section>
 
-    <table class="table table-dark table-striped table-hover table-active table-bordered border-light mt-4">
-        <tr>
-            <th scope="col" class="text-center">Nama Barang</th>
-            <th scope="col" class="text-center">Harga Barang</th>
-            <th scope="col" class="text-center">Deskripsi</th>
-        </tr>
+    <div class="container shadow p-3 mb-5 bg-body rounded">
+        <table class="table table-dark table-striped table-hover table-active table-bordered border-light mt-4">
+            <tr>
+                <th scope="col" class="text-center">Nama Barang</th>
+                <th scope="col" class="text-center">Harga Barang</th>
+                <th scope="col" class="text-center">Deskripsi</th>
+            </tr>
 
-        {% for barang in list_barang %}
-        <tr>
-        <td class="text-center">{{barang.nama_barang}}</td>
-        <td class="text-center">{{barang.harga_barang}}</td>
-        <td class="text-center">{{barang.deskripsi}}</td>
-        </tr>
-        {% endfor %}
-    </table>
+            {% for barang in list_barang %}
+            <tr>
+            <td class="text-center">{{barang.nama_barang}}</td>
+            <td class="text-center">{{barang.harga_barang}}</td>
+            <td class="text-center">{{barang.deskripsi}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>>
 
 {% endblock content %}
