@@ -8,40 +8,41 @@
 
 {% block content %}
 
-<div class = "container shadow p-3 mb-5 bg-body rounded">
+<div class="container-fluid">
+    <div class = "container shadow p-3 mb-5 bg-body rounded col align-self-center">
 
-    <h1>Login</h1>
+        <h1 class="text-center">Login</h1>
 
-    <form method="POST" action="">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>Username: </td>
-                <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
-            </tr>
-                    
-            <tr>
-                <td>Password: </td>
-                <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
-            </tr>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>Username: </td>
+                    <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
+                </tr>
+                        
+                <tr>
+                    <td>Password: </td>
+                    <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
+                </tr>
 
-            <tr>
-                <td></td>
-                <td><input class="btn btn-primary login_btn" type="submit" value="Login"></td>
-            </tr>
-        </table>
-    </form>
+                <tr>
+                    <td></td>
+                    <td><input class="btn btn-primary login_btn" type="submit" value="Login"></td>
+                </tr>
+            </table>
+        </form>
 
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}     
-        
-    Belum mempunyai akun? <a href="{% url 'wishlist:register' %}">Buat Akun</a>
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}     
+            
+        Belum mempunyai akun? <a href="{% url 'wishlist:register' %}">Buat Akun</a>
 
+    </div>
 </div>
-
 {% endblock content %}
