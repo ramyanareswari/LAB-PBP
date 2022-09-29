@@ -1,26 +1,31 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+    <title>Mya|Wishlist</title>
+{% endblock meta %}
 
 {% block content %}
-<h5>Nama: </h5>
-<p>{{nama}}</p>
 
-<table>
-    <tr>
-    <th>Nama Barang</th>
-    <th>Harga Barang</th>
-    <th>Deskripsi</th>
-    </tr>
+    {% include 'header.html' %}
 
-    {% for barang in list_barang %}
-    <tr>
-    <th>{{barang.nama_barang}}</th>
-    <th>{{barang.harga_barang}}</th>
-    <th>{{barang.deskripsi}}</th>
-    </tr>
-    {% endfor %}
-</table>
+    <h5>Nama: </h5>
+    <p>{{nama}}</p>
 
-<h5>Sesi terakhir login: {{ last_login }}</h5>
+    <table class="table table-dark table-striped table-hover table-active table-bordered border-light mt-4">
+        <tr>
+            <th scope="col" class="text-center">Nama Barang</th>
+            <th scope="col" class="text-center">Harga Barang</th>
+            <th scope="col" class="text-center">Deskripsi</th>
+        </tr>
 
-<button><a href="{% url 'wishlist:logout' %}">Logout</a></button>
+        {% for barang in list_barang %}
+        <tr>
+        <td class="text-center">{{barang.nama_barang}}</td>
+        <td class="text-center">{{barang.harga_barang}}</td>
+        <td class="text-center">{{barang.deskripsi}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
 {% endblock content %}

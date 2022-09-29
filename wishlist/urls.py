@@ -9,7 +9,6 @@ urlpatterns = [
     path('xml/<int:id>', show_xml_id, name='show_xml_id'),
     path('json/', show_json, name='show_json'),
     path('json/<int:id>', show_json_id, name='show_json_id'),
-    path('logout/', logout_user, name='logout'), 
     path('register/', register, name='register'),
     path('login/', login_user, name='login'),
     path('logout/', logout_user, name='logout'),
