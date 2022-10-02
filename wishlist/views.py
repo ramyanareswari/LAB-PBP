@@ -47,7 +47,6 @@ def login_user(request):
         if user is not None:
             login(request, user)
             response = HttpResponseRedirect(reverse("wishlist:show_wishlist"))
-            response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
         else:
             messages.info(request, 'Username atau Password salah!')
