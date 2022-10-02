@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from wishlist.forms import RegisterUserForm
 from wishlist.models import BarangWishlist
 
 
@@ -27,10 +28,10 @@ def show_wishlist(request):
     return render(request, "wishlist.html", context)
 
 def register(request):
-    form = UserCreationForm()
+    form = RegisterUserForm()
 
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = RegisterUserForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Akun telah berhasil dibuat!')
