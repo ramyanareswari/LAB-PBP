@@ -1,4 +1,3 @@
-import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.core import serializers
