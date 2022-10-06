@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.core import serializers
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from wishlist.models import BarangWishlist
+import json
 
 
 
@@ -23,6 +24,30 @@ def show_wishlist(request):
     }
 
     return render(request, "wishlist.html", context)
+
+def show_wishlist_ajax(request):
+    data_barang_wishlist = BarangWishlist.objects.all()
+    
+    context = {
+        'list_barang': data_barang_wishlist,
+        'nama':  'Ramya Nareswari',
+    }
+
+    return render(request, "wishlist_ajax.html", context)
+
+#  AJAX view which returns a JSON object with boolean from the username exists query
+def add_wishlist(request):
+    if request.method == 'POST':
+        nama_barang = request.POST['nama_barang']
+        harga_barang = request.POST['harga_barang']
+        deskripsi = request.POST['deskripsi']
+        wishlist_obj = BarangWishlist(
+            nama_barang=nama_barang,
+            harga_barang=harga_barang,
+            deskripsi=deskripsi)
+        wishlist_obj.save()
+        return JsonResponse()
+    return render(request, 'wishlist_ajax.html')
 
 def register(request):
     form = UserCreationForm()

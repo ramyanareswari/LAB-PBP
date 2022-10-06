@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+    <title>Mya | Wishlist</title>
+{% endblock meta %}
+
+{% block content %}
+
+    {% include 'header.html' %}
+
+    <section class="landing">
+        <div class="container-fluid">
+            <div class="title">
+                <h1 class="text-center">Selamat Datang di</h1>
+                <h1 class="text-center">Wishlist Mya</h1>
+            </div>
+        </div>
+    </section>
+
+    <div class="container shadow p-3 mb-5 bg-body rounded">
+        <table class="table table-dark table-striped table-hover table-active table-bordered border-light mt-4">
+            <tr>
+                <th scope="col" class="text-center">Nama Barang</th>
+                <th scope="col" class="text-center">Harga Barang</th>
+                <th scope="col" class="text-center">Deskripsi</th>
+            </tr>
+            
+            <!-- Menampung data barang dari submisi form -->
+            <tr id="data-id"></tr>
+
+        </table>
+    </div>
+
+    <!-- Form for adding data barang -->
+    <div class="container shadow p-3 mb-5 bg-body rounded">
+        <form action="" method="POST" novalidate>
+            <div class="container mb-2">
+                <label for="nama_barang">Nama Barang</label>
+                <input
+                type="text"
+                name="nama_barang"
+                id="nama_barang"
+                placeholder="Masukkan Nama Barang"
+                class="form-control"
+                />
+            </div>
+
+            <div class="container mb-2">
+                <label for="harga_barang">Harga Barang</label>
+                <input
+                type="text"
+                name="harga_barang"
+                id="harga_barang"
+                placeholder="Masukkan Harga Barang"
+                class="form-control"
+                />
+            </div>
+
+            <div class="container mb-2">
+                <label for="deskripsi">Deskripsi Barang</label>
+                <input
+                type="text"
+                name="deskripsi"
+                id="deskripsi"
+                placeholder="Masukkan Deskripsi Barang"
+                class="form-control"
+                />
+            </div>
+            <tr>
+                <td><input class="btn btn-get-data btn-primary" type="submit" value="Add List Barang"></td>
+            </tr>
+        </form>
+    </div>
+
+
+{% endblock content %}
+
+
+<!-- IMPLEMENT AJAX GET USING JQUERY TO FETCH DATA FROM DATABASE AND FROM USER SUBMISSION-->
+{% block scripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+    // get data from json
+    $(document).ready(function () {
+        $.get('/wishlist/json', function (data) {
+        data.map((unit) =>
+        $('#data-id').append(`<tr>
+        <td>${unit.fields.nama_barang}</td>
+        <td>${unit.fields.harga_barang}</td>
+        <td>${unit.fields.deskripsi}</td>
+        </tr>`)
+            );
+        });
+    });
+
+    // get data from form submission
+    $('form').submit(function (event) {
+      const formData = {
+        csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val(),
+        nama_barang: $('#nama_barang').val(),
+        harga_barang: parseInt($('#harga_barang').val()),
+        deskripsi: $('#deskripsi').val(),
+      };
+
+      $.ajax({
+        type: 'POST',
+        url: '/wishlist/ajax/submit',
+        data: formData,
+        dataType: 'json',,
+      }).done(function (data) {
+        $('#message').text(data.message);
+      });
+
+      event.preventDefault();
+    });
+  });
+
+</script>
+
+
+
+
+{% endblock scripts %}
