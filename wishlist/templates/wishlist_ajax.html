@@ -96,27 +96,7 @@
     });
 
     // get data from form submission
-    $('form').submit(function (event) {
-      const formData = {
-        csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val(),
-        nama_barang: $('#nama_barang').val(),
-        harga_barang: parseInt($('#harga_barang').val()),
-        deskripsi: $('#deskripsi').val(),
-      };
-
-      $.ajax({
-        type: 'POST',
-        url: '/wishlist/ajax/submit',
-        data: formData,
-        dataType: 'json',,
-      }).done(function (data) {
-        $('#message').text(data.message);
-      });
-
-      event.preventDefault();
-    });
-  });
-
+    
 </script>
 
 
