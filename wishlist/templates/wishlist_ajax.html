@@ -12,7 +12,7 @@
     <section class="landing">
         <div class="container-fluid">
             <div class="title">
-                <h1 class="text-center">Selamat Datang di</h1>
+                <h1 class="text-center p-3">Selamat Datang di</h1>
                 <h1 class="text-center">Wishlist Mya</h1>
             </div>
         </div>
@@ -34,7 +34,9 @@
 
     <!-- Form for adding data barang -->
     <div class="container shadow p-3 mb-5 bg-body rounded">
-        <form action="" method="POST" novalidate>
+        <form id= "form" action="" method="POST">
+            {% csrf_token %}
+
             <div class="container mb-2">
                 <label for="nama_barang">Nama Barang</label>
                 <input
@@ -68,7 +70,7 @@
                 />
             </div>
             <tr>
-                <td><input class="btn btn-get-data btn-primary" type="submit" value="Add List Barang"></td>
+                <td><input class="btn btn-get-data btn-primary" id="form-btn"   type="submit" value="Add List Barang"></td>
             </tr>
         </form>
     </div>
@@ -82,24 +84,46 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <script>
-    // get data from json
-    $(document).ready(function () {
-        $.get('/wishlist/json', function (data) {
-        data.map((unit) =>
-        $('#data-id').append(`<tr>
-        <td>${unit.fields.nama_barang}</td>
-        <td>${unit.fields.harga_barang}</td>
-        <td>${unit.fields.deskripsi}</td>
-        </tr>`)
-            );
-        });
-    });
+    // get data from endpoint json
+    async function getWishlist() {
+    return fetch("{% url 'get_wishlist_json' %}").then((result) => result.json())}
+
+    async function refreshWishlist() {
+        document.getElementById("data-id").innerHTML = ""
+
+        // const untuk manggil async function tadi (simpen hasil return nya juga)
+        const wishlist = await getWishlist()
+        let htmlString = `\n<tr>
+                <th scope="col" class="text-center">Nama Barang</th>
+                <th scope="col" class="text-center">Harga Barang</th>
+                <th scope="col" class="text-center">Deskripsi</th>
+            </tr>`
+
+        // iterate const, lalu akses fieldnya
+        wishlist.forEach((item) => {
+          htmlString += `\n<tr>
+          <th>${item.fields.nama_barang}</th>
+          <th>${item.fields.harga_barang}</th>
+          <th>${item.fields.deskripsi}</th>
+        </tr>` 
+        })
+        
+        document.getElementById("data-id").innerHTML = htmlString
+    }
 
     // get data from form submission
+    function addWishlist() {
+        fetch("{% url 'add_wishlist_item' %}", {
+            method: "POST",
+            body: new CreateNew(document.querySelector('#form'))
+        }).then(refreshWishlist)
+        return false
+    }
+
+    // buat button yang onClick manggil function di poin 1
+    document.getElementById("form-btn").onclick = addWishlist
+    refreshWishlist()
     
 </script>
-
-
-
 
 {% endblock scripts %}
